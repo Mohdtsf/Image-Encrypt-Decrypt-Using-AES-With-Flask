@@ -1,26 +1,16 @@
-from flask import Flask, request, render_template, url_for, redirect, send_from_directory, flash
+from flask import Flask, request, render_template, redirect, send_file
 from werkzeug.utils import secure_filename
-import os
-import io  # Import the io module for file handling in Python 3
+import io
 
 from Crypto import Random
 from Crypto.Cipher import AES
 from Crypto.Hash import SHA256
 
-UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/uploads/'
-DOWNLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/downloads/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__, static_url_path="/static")
 app.secret_key = 'aes-image-crypto-secret-key-change-in-production'
-DIR_PATH = os.path.dirname(os.path.realpath(__file__))
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['DOWNLOAD_FOLDER'] = DOWNLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024
-
-# Create directories if they don't exist
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(DOWNLOAD_FOLDER, exist_ok=True)
 
 
 def allowed_file(filename):
@@ -32,66 +22,104 @@ def allowed_file(filename):
 def home_page():
     return render_template('home.html')
 
+
 @app.route('/about')
 def about_page():
     return render_template('about.html')
 
+
+# ==========================
+# ENCRYPT ROUTE (IN-MEMORY)
+# ==========================
 @app.route('/encrypt', methods=['GET', 'POST'])
 def encrypt():
     if request.method == 'POST':
+
         if 'file' not in request.files:
             return redirect(request.url)
+
         file = request.files['file']
         text = request.form['text']
+
         if file.filename == '':
             return redirect(request.url)
+
         if text == "":
             error = 'KEY REQUIRED !'
             return render_template('encrypt.html', error=error)
+
         if file and allowed_file(file.filename):
+
             filename = "enc_" + secure_filename(file.filename)
+
+            # Generate AES key
             hash_obj = SHA256.new(text.encode('utf-8'))
             key = hash_obj.digest()
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            encrypt_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), filename, key)
-            return redirect(url_for('uploaded_file', filename=filename))
+
+            # Read file in memory
+            file_bytes = file.read()
+
+            # Encrypt in memory
+            encrypted_data = encryption(file_bytes, key)
+
+            # Return encrypted file directly
+            return send_file(
+                io.BytesIO(encrypted_data),
+                download_name=filename,
+                as_attachment=True
+            )
+
     return render_template('encrypt.html')
 
 
-def encryption(message, key, key_size=256):
-    message = message + b"\0" * (AES.block_size - len(message) % AES.block_size)
+def encryption(message, key):
+    message = pad(message)
     iv = Random.new().read(AES.block_size)
     cipher = AES.new(key, AES.MODE_CBC, iv)
     return iv + cipher.encrypt(message)
 
 
-def encrypt_file(path, filename, key):
-    with io.open(app.config['UPLOAD_FOLDER'] + filename, "rb") as fo:
-        plaintext = fo.read()
-    enc = encryption(plaintext, key)
-    with io.open(app.config['DOWNLOAD_FOLDER'] + filename, "wb") as fo:
-        fo.write(enc)
-
-
+# ==========================
+# DECRYPT ROUTE (IN-MEMORY)
+# ==========================
 @app.route('/decrypt', methods=['GET', 'POST'])
 def decrypt():
     if request.method == 'POST':
+
         if 'file' not in request.files:
             return redirect(request.url)
+
         file = request.files['file']
         text = request.form['text']
+
         if file.filename == '':
             return redirect(request.url)
+
         if text == "":
             error = 'KEY REQUIRED !'
             return render_template('decrypt.html', error=error)
+
         if file and allowed_file(file.filename):
-            filename = "dec" + secure_filename(file.filename)[3:]
+
+            filename = "dec_" + secure_filename(file.filename)
+
+            # Generate AES key
             hash_obj = SHA256.new(text.encode('utf-8'))
             key = hash_obj.digest()
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            decrypt_file(os.path.join(app.config['UPLOAD_FOLDER'], filename), filename, key)
-            return redirect(url_for('uploaded_file', filename=filename))
+
+            # Read encrypted file in memory
+            encrypted_bytes = file.read()
+
+            # Decrypt in memory
+            decrypted_data = decryption(encrypted_bytes, key)
+
+            # Return decrypted file directly
+            return send_file(
+                io.BytesIO(decrypted_data),
+                download_name=filename,
+                as_attachment=True
+            )
+
     return render_template('decrypt.html')
 
 
@@ -99,18 +127,17 @@ def decryption(ciphertext, key):
     iv = ciphertext[:AES.block_size]
     cipher = AES.new(key, AES.MODE_CBC, iv)
     plaintext = cipher.decrypt(ciphertext[AES.block_size:])
-    return plaintext.rstrip(b"\0")
+    return unpad(plaintext)
 
 
-def decrypt_file(path, filename, key):
-    with io.open(app.config['UPLOAD_FOLDER'] + filename, "rb") as fo:
-        plaintext = fo.read()
-    dec = decryption(plaintext, key)
-    with io.open(app.config['DOWNLOAD_FOLDER'] + filename, "wb") as fo:
-        fo.write(dec)
+# ==========================
+# PROPER PKCS7 PADDING
+# ==========================
+def pad(data):
+    pad_length = AES.block_size - len(data) % AES.block_size
+    return data + bytes([pad_length]) * pad_length
 
 
-@app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['DOWNLOAD_FOLDER'], filename, as_attachment=True)
-
+def unpad(data):
+    pad_length = data[-1]
+    return data[:-pad_length]
