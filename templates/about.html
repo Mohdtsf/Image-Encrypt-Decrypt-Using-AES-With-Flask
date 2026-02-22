@@ -1,251 +1,113 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>About</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <div>
-      <nav class="navbar navbar-expand-lg bg-dark text-white">
-        <div class="container-fluid">
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
+{% extends "base.html" %}
+{% block title %}About AES — AES Image Crypto{% endblock %}
+
+{% block content %}
+<div class="about-section fade-in-up">
+  <div class="glass-card">
+    <div class="about-header">
+      <div class="hero-icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <h1 class="about-title">About AES Algorithm</h1>
+      <p class="about-subtitle">Learn how the Advanced Encryption Standard secures your data</p>
+    </div>
+
+    <div class="accordion accordion-custom" id="aboutAccordion">
+      <!-- Item 1 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <i class="fas fa-shield-alt me-2"></i> What is AES Algorithm?
           </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/about">About</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Features
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" href="/encrypt">Encryption</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="/decrypt">Decryption</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#aboutAccordion">
+          <div class="accordion-body">
+            The <strong>Advanced Encryption Standard (AES)</strong> is a symmetric encryption algorithm widely recognized for its
+            security and efficiency. Adopted as a standard by the National Institute of Standards and Technology (NIST) in 2001,
+            AES has become the de facto encryption algorithm for a broad range of applications, including securing sensitive data
+            in communications, storage, and various information systems.
+            <br /><br />
+            AES operates on fixed-size blocks of data and supports key lengths of 128, 192, or 256 bits, providing a balance
+            between robust security and computational efficiency. Its strength lies in its resistance to various cryptographic
+            attacks, making it a cornerstone for secure communication and data protection in modern computing environments.
           </div>
         </div>
-      </nav>
-      <div class="container">
-        <div class="accordion" id="accordionExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button
-                class="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                What is AES Algorithm?
-              </button>
-            </h2>
-            <div
-              id="collapseOne"
-              class="accordion-collapse collapse show"
-              data-bs-parent="#accordionExample"
-            >
-              <div class="accordion-body">
-                The <strong>Advanced Encryption Standard (AES)</strong> is a
-                symmetric encryption algorithm widely recognized for its
-                security and efficiency. Adopted as a standard by the National
-                Institute of Standards and Technology (NIST) in 2001, AES has
-                become the de facto encryption algorithm for a broad range of
-                applications, including securing sensitive data in
-                communications, storage, and various information systems. AES
-                operates on fixed-size blocks of data and supports key lengths
-                of 128, 192, or 256 bits, providing a balance between robust
-                security and computational efficiency. Its strength lies in its
-                resistance to various cryptographic attacks, making it a
-                cornerstone for secure communication and data protection in
-                modern computing environments. The algorithm's widespread use in
-                both governmental and commercial contexts underscores its
-                trustworthiness and its crucial role in ensuring the
-                confidentiality and integrity of sensitive information across
-                digital platforms
-              </div>
-            </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            <i class="fas fa-trophy me-2"></i> What makes AES better than other algorithms?
+          </button>
+        </h2>
+        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#aboutAccordion">
+          <div class="accordion-body">
+            AES is considered one of the best encryption algorithms for several reasons:
+            <br /><br />
+            <strong>1) Security Strength:</strong>
+            AES has withstood extensive cryptanalysis and scrutiny from the global cryptographic community. No practical
+            vulnerabilities have been discovered.
+            <br /><br />
+            <strong>2) Standardization &amp; Adoption:</strong>
+            Standardized by NIST and adopted by governments, organizations, and industries worldwide as the de facto
+            standard for symmetric key encryption.
+            <br /><br />
+            <strong>3) Versatility:</strong>
+            Supports key sizes of 128, 192, and 256 bits, allowing users to choose the level of security based on their
+            specific needs.
+            <br /><br />
+            <strong>4) Efficiency &amp; Performance:</strong>
+            Designed for efficiency and is computationally fast. It performs well in everything from resource-constrained
+            devices to high-performance computing systems.
+            <br /><br />
+            <strong>5) Resistance to Attacks:</strong>
+            Demonstrated resistance to various cryptographic attacks, including differential and linear cryptanalysis.
           </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo"
-                aria-expanded="false"
-                aria-controls="collapseTwo"
-              >
-                What makes AES Algorithm better than other Encryption-Decryption
-                Algorithms
-              </button>
-            </h2>
-            <div
-              id="collapseTwo"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
-              <div class="accordion-body">
-                AES (Advanced Encryption Standard) is considered one of the best
-                encryption-decryption algorithms for several reasons:<br /><br />
+        </div>
+      </div>
 
-                <strong>1) Security Strength:</strong>
-
-                AES has withstood extensive cryptanalysis and scrutiny from the
-                global cryptographic community. Its security is based on the
-                difficulty of mathematical problems, such as the complexity of
-                algebraic and statistical attacks, and no practical
-                vulnerabilities have been discovered.
-                <br /><br />
-
-                <strong>2)Standardization and Adoption:</strong>
-
-                AES has been standardized by the National Institute of Standards
-                and Technology (NIST) and adopted by governments, organizations,
-                and industries worldwide. Its widespread acceptance makes it a
-                de facto standard for symmetric key encryption.<br /><br />
-
-                <strong>3)Versatility:</strong>
-
-                AES supports key sizes of 128, 192, and 256 bits, allowing users
-                to choose the level of security based on their specific needs.
-                The three key sizes provide a flexible balance between security
-                and performance.<br /><br />
-
-                <strong>4)Efficiency and Performance:</strong>
-
-                AES is designed for efficiency and is computationally fast. It
-                performs well in a variety of environments, from
-                resource-constrained devices to high-performance computing
-                systems. Its speed and low computational overhead contribute to
-                its widespread use in various applications.<br /><br />
-                <strong>5) Resistance to Attacks:</strong>5 AES has demonstrated
-                resistance to various cryptographic attacks, including
-                differential and linear cryptanalysis. Its design incorporates
-                features that enhance its resistance to known types of attacks,
-                making it a reliable choice for secure communication and data
-                protection.<br /><br />
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header">
-              <button
-                class="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseThree"
-              >
-                How is Encryption carried out in AES?
-              </button>
-            </h2>
-            <div
-              id="collapseThree"
-              class="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
-              <div class="accordion-body">
-                Encryption in AES (Advanced Encryption Standard) involves a
-                series of well-defined steps that transform the plaintext data
-                into ciphertext using a symmetric key. Here's a detailed
-                explanation of the encryption process in AES:<br /><br />
-
-                <strong>1. Key Expansion:</strong>
-                AES operates on blocks of data and requires an initial key
-                expansion step to derive a set of round keys from the original
-                secret key. The key expansion involves transforming the original
-                key into a key schedule that the algorithm will use during each
-                round of encryption. The key schedule is generated using a
-                combination of bitwise operations, substitution, and
-                permutation.<br /><br />
-
-                <strong>2. Initial Round Key Addition:</strong>
-                The first step of the encryption process is to perform an
-                initial round key addition. The 128-bit plaintext block is XORed
-                with the first round key derived from the key expansion.<br /><br />
-
-                <strong>3. Rounds (10, 12, or 14):</strong>
-                AES encryption consists of multiple rounds, and the number of
-                rounds depends on the key size: For a 128-bit key, there are 10
-                rounds. For a 192-bit key, there are 12 rounds. For a 256-bit
-                key, there are 14 rounds. Each round of AES encryption comprises
-                the following four operations:<br /><br />
-
-                a. SubBytes (Byte Substitution): Each byte in the state matrix
-                is replaced with a corresponding byte from the S-box
-                (substitution box). The S-box is a fixed, pre-defined nonlinear
-                substitution table that provides confusion in the encryption
-                process.<br /><br />
-
-                b. ShiftRows: Bytes in each row of the state matrix are shifted
-                cyclically to the left. The number of positions each byte is
-                shifted depends on the row number. This step provides diffusion
-                by spreading the influence of each byte across multiple
-                columns.<br /><br />
-
-                c. MixColumns: In this step, each column of the state matrix is
-                mixed using a mathematical operation known as the MixColumns
-                transformation. This operation involves matrix multiplication
-                with a fixed polynomial, providing further diffusion and
-                increasing the complexity of the transformation.<br /><br />
-
-                d. Round Key Addition: The round key derived from the key
-                schedule is XORed with the state matrix. This step introduces
-                the influence of the key into the encryption process.<br /><br />
-
-                <strong>4. Final Round:</strong>
-                The final round is similar to the other rounds but lacks the
-                MixColumns operation. It includes the following steps: SubBytes
-                ShiftRows Round Key Addition<br /><br />
-                <strong>5. Output:</strong>
-                After the final round, the state matrix is XORed with the last
-                round key, resulting in the encrypted ciphertext. The ciphertext
-                is the transformed representation of the original plaintext
-                using the symmetric key.<br /><br />
-              </div>
-            </div>
+      <!-- Item 3 -->
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <i class="fas fa-cogs me-2"></i> How is Encryption carried out in AES?
+          </button>
+        </h2>
+        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#aboutAccordion">
+          <div class="accordion-body">
+            Encryption in AES involves a series of well-defined steps that transform plaintext into ciphertext using a
+            symmetric key:
+            <br /><br />
+            <strong>1. Key Expansion:</strong>
+            The original key is expanded into a key schedule using bitwise operations, substitution, and permutation.
+            <br /><br />
+            <strong>2. Initial Round Key Addition:</strong>
+            The 128-bit plaintext block is XORed with the first round key derived from the key expansion.
+            <br /><br />
+            <strong>3. Rounds (10, 12, or 14):</strong>
+            Each round consists of four operations:
+            <br />
+            &bull; <strong>SubBytes</strong> — Each byte is replaced using the S-box substitution table.
+            <br />
+            &bull; <strong>ShiftRows</strong> — Bytes in each row are cyclically shifted left.
+            <br />
+            &bull; <strong>MixColumns</strong> — Columns are mixed via matrix multiplication.
+            <br />
+            &bull; <strong>Round Key Addition</strong> — The round key is XORed with the state matrix.
+            <br /><br />
+            <strong>4. Final Round:</strong>
+            Similar to other rounds but omits the MixColumns step: SubBytes → ShiftRows → Round Key Addition.
+            <br /><br />
+            <strong>5. Output:</strong>
+            The state matrix is XORed with the last round key, producing the encrypted ciphertext.
           </div>
         </div>
       </div>
     </div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-      crossorigin="anonymous"
-    ></script>
-  </body>
-</html>
+  </div>
+</div>
+{% endblock %}
